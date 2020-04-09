@@ -7,3 +7,9 @@
 </div>
 {{ wtf.quick_form(form) }}
 {% endblock %}
+
+## required tracker for musixmatch api use
+{% block scripts %}
+{{ super() }}
+  <script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP">
+{% endblock %}

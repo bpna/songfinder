@@ -3,6 +3,5 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 class SearchForm(FlaskForm):
-    artist = StringField('Artist (optional):')
-    term = StringField('Search term:', validators=[DataRequired()])
+    lyric = StringField('Search term:', validators=[DataRequired()])
     submit = SubmitField('submit')
