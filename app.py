@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'a-023hr0983iuooianf0987g1'
 def index():
   form = SearchForm()
   results = None
-  scraper = SongScraper()
+  scraper = SongScraper(debug=True)
   if form.validate_on_submit():
       results = scraper.search_lyric(form.lyric.data)
       form.lyric.data = ''
