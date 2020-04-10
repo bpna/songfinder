@@ -6,6 +6,17 @@
   <h1>Fill out the form to achieve your wildest dreams!</h1>
 </div>
 {{ wtf.quick_form(form) }}
+{% if results %}
+  <div class="artist-name">
+    {{ results.artist }}
+  </div>
+  <div class="album">
+    {{ results.album }}
+  </div>
+  <div class="lyrics">
+    {{ results.lyrics }}
+  </div>
+{% endif %}
 {% endblock %}
 
 ## required tracker for musixmatch api use
