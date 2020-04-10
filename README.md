@@ -9,6 +9,8 @@ To run this application locally, first make sure you have the following packages
 * python3
 * pip3
 
+The application also requires the Musixmatch Dataset database, which can be downloaded [here](http://millionsongdataset.com/sites/default/files/AdditionalFiles/mxm_dataset.db). Place this file in the root folder of the application.
+
 Then, in your local clone run:
 
 ```
