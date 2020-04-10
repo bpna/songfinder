@@ -31,6 +31,7 @@ To run the application in development mode, allowing stack trace output inside y
 ### TODOS
 
 * ~~Handle Musixmatch API response status 404~~
+* Application crashes when searching for a word not in the top 5000 Musixmatch word list
 * Handle response status codes that are not 200 or 404
 * Allow a user-selected number of results per search
 * Show the number of occurrences of the search term for each search result
