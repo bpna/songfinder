@@ -1,7 +1,7 @@
 import requests
 import json
 import sqlite3
-from errors import StatusCodeError, SongNotFoundError
+from errors import StatusCodeError, SongNotFoundError, TermNotAvailableError
 
 class SongScraper:
     def __init__(self, debug=False):
@@ -104,10 +104,15 @@ class SongScraper:
                 "tracker_url": album name (string)
         Raises:
             None"""
-        results = self.cursor.execute('SELECT mxm_tid, count ' +
-                                      'FROM lyrics WHERE ' +
-                                      'word="' + term + '" ' +
-                                      'ORDER BY RANDOM() LIMIT 100')
+        is_in_db = self.cursor.execute('SELECT word FROM words ' +
+                                       'WHERE word="' + term + '"')
+        if (is_in_db.fetchone()) is None:
+            raise TermNotAvailableError(term)
+
+        results  = self.cursor.execute('SELECT mxm_tid, count ' +
+                                       'FROM lyrics WHERE ' +
+                                       'word="' + term + '" ' +
+                                       'ORDER BY RANDOM() LIMIT 100')
         tracks_found = 0
         song_info = {}
         while tracks_found < 1:

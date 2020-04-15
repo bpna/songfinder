@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from forms import SearchForm
 from scraper import SongScraper
-from errors import StatusCodeError, SongNotFoundError
+from errors import StatusCodeError, SongNotFoundError, TermNotAvailableError
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -18,6 +18,8 @@ def index():
           results = scraper.search_lyric(form.lyric.data)
       except StatusCodeError as e:
           flash('Status code ' + e.status_code + ' received')
+      except TermNotAvailableError as e:
+          flash('"' + e.term + '" is not in the search term set')
       form.lyric.data = ''
   return render_template('index.html', form=form, results=results)
 
