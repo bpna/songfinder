@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from forms import SearchForm
 from scraper import SongScraper
+from errors import StatusCodeError, SongNotFoundError
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -13,7 +14,10 @@ def index():
   results = None
   scraper = SongScraper(debug=True)
   if form.validate_on_submit():
-      results = scraper.search_lyric(form.lyric.data)
+      try:
+          results = scraper.search_lyric(form.lyric.data)
+      except StatusCodeError as e:
+          flash('Status code ' + e.status_code + ' received')
       form.lyric.data = ''
   return render_template('index.html', form=form, results=results)
 

@@ -23,6 +23,7 @@ Then, in your local clone run:
 Then visit http://127.0.0.1:5000 in your Web browser.
 
 The first and second commands are necessary to create the virtual environment which contains the necessary python packages, which are listed in `requirements.txt`. On Windows machines, the second command is `venv\Scripts\activate` instead.
+
 *THIS STEP IS IMPORTANT* because it prevents conflicts with other versions of the same packages required by different applications system-wide, and maintains application stability when these packages are upgraded system-wide.
 To exit the virtual environment, use `deactivate`.
 

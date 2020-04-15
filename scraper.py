@@ -1,10 +1,7 @@
 import requests
 import json
 import sqlite3
-
-class SongNotFoundError(Exception):
-    """Raised when a Musixmatch track id is not in the Musixmatch DB"""
-    pass
+from errors import StatusCodeError, SongNotFoundError
 
 class SongScraper:
     def __init__(self, debug=False):
@@ -33,6 +30,7 @@ class SongScraper:
                              '&apikey=' + self.apikey
         track_info_res  = requests.get(track_info_req_url)
         track_info_json = json.loads(track_info_res.text)
+        status_code = track_info_json['message']['header']['status_code']
 
         if self.debug:
             print('TRACK INFO REQUEST URL ====================================')
@@ -41,8 +39,10 @@ class SongScraper:
             print(json.dumps(track_info_json, indent=2))
 
         track_info = {}
-        if track_info_json['message']['header']['status_code'] == 404:
+        if status_code == 404:
             raise SongNotFoundError
+        elif status_code != 200:
+            raise StatusCodeError(status_code)
         else:
             track_info['artist'] = track_info_json['message']['body']['track']\
                                                   ['artist_name']
@@ -67,6 +67,7 @@ class SongScraper:
                          '&apikey=' + self.apikey
         lyrics_res  = requests.get(lyrics_req_url)
         lyrics_json = json.loads(lyrics_res.text)
+        status_code = lyrics_json['message']['header']['status_code']
 
         if self.debug:
             print('LYRICS REQUEST URL ========================================')
@@ -76,8 +77,11 @@ class SongScraper:
 
         lyrics_info = {}
         lyrics_info['tracker_url'] = ''
-        if lyrics_json['message']['header']['status_code'] == 404:
+
+        if status_code == 404:
             lyrics_info['lyrics']      = "Lyrics unavailable"
+        elif status_code != 200:
+            raise StatusCodeError(status_code)
         else:
             lyrics_info['lyrics']      = lyrics_json['message']['body']\
                                                     ['lyrics']['lyrics_body']
